@@ -1,6 +1,6 @@
 import { RecordingDto } from './dto/recording';
 import { createReducer } from '@reduxjs/toolkit';
-import { addRecordingAction, remoteRecordingAction } from './recordings.actions';
+import { addRecordingAction, removeRecordingAction } from './recordings.actions';
 
 export interface RecordingsState {
     recordings: RecordingDto[];
@@ -22,7 +22,7 @@ export const recordingsReducer = createReducer<RecordingsState>(
                 })
             )
             .addCase(
-                remoteRecordingAction, (state, action) => ({
+                removeRecordingAction, (state, action) => ({
                     ...state,
                     recordings: state.recordings.filter(r => r.id !== action.payload)
                 })

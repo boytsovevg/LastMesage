@@ -6,6 +6,6 @@ export const addRecordingAction = createAction<RecordingDto>(
     `[${recordingsReducerName}] addRecordingAction`
 );
 
-export const remoteRecordingAction = createAction<string>(
-    `[${recordingsReducerName}] remoteRecordingAction`
+export const removeRecordingAction = createAction<string>(
+    `[${recordingsReducerName}] removeRecordingAction`
 );

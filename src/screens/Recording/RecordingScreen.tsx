@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback, FlatList, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { addSeconds, format, getTime } from 'date-fns';
+
+import { FontAwesome } from '@expo/vector-icons';
 
 import { v4 as uuid } from 'uuid';
 
-import MicrophoneIcon from '../../../assets/icons/mic.svg';
 import { useAppDispatch } from '../../store/store';
 import { RecordingDto } from '../../store/recordings/dto/recording';
-import { addRecordingAction, remoteRecordingAction } from '../../store/recordings/recordings.actions';
-import { useSelector } from 'react-redux';
+import { addRecordingAction } from '../../store/recordings/recordings.actions';
 import { selectRecordings } from '../../store/recordings/recordings.selectors';
 
 const getInitialTime = () => {
@@ -24,7 +25,6 @@ export type RecordingState = 'None' | 'InProgress' | 'Complete';
 
 export const RecordingScreen = () => {
     const dispatch = useAppDispatch();
-    const recordings = useSelector(selectRecordings);
 
     const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
     const [recordingState, setRecordingState] = useState<RecordingState>('None');
@@ -58,7 +58,6 @@ export const RecordingScreen = () => {
         dispatch(addRecordingAction(recordingDto));
     };
 
-    const handlePressRecording = (recordingId: string) => dispatch(remoteRecordingAction(recordingId));
 
     return (
         <View style={ styles.container }>
@@ -75,23 +74,11 @@ export const RecordingScreen = () => {
                     onPressIn={ handlePressStart }
                     onPressOut={ handlePressEnd }
                 >
-                    <MicrophoneIcon
-                        width={ 100 }
-                        height={ 100 }
+                    <FontAwesome
+                        name={'microphone'}
+                        size={100}
                     />
                 </TouchableWithoutFeedback>
-            </View>
-
-            <View style={styles.element}>
-                <FlatList
-                    data={ recordings }
-                    keyExtractor={item => item.id}
-                    renderItem={ ({ item }) =>
-                        <TouchableOpacity onPress={() => handlePressRecording(item.id)}>
-                            <Text>{ item.title } - { format(item.duration, 'mm:ss') }</Text>
-                        </TouchableOpacity>
-                    }
-                />
             </View>
         </View>
     );
@@ -99,9 +86,9 @@ export const RecordingScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        flexDirection: 'column',
+        flex: 1,
         alignItems: 'center',
+        justifyContent: 'center'
     },
     element: {
         marginTop: 30,
