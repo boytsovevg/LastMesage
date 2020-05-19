@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { addSeconds, format, getTime } from 'date-fns';
-
-import { FontAwesome } from '@expo/vector-icons';
 
 import { useAppDispatch } from '../../store/store';
 import { RecordingDto } from '../../store/recordings/dto/recording';
@@ -22,7 +21,7 @@ export type RecordingState = 'None' | 'InProgress' | 'Complete';
 export const RecordingScreen = () => {
     const dispatch = useAppDispatch();
 
-    const [intervalId, setIntervalId] = useState<NodeJS.Timer | undefined>(undefined);
+    const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
     const [recordingState, setRecordingState] = useState<RecordingState>('None');
 
     const [time, setTime] = useState<Date>(getInitialTime());
@@ -31,7 +30,7 @@ export const RecordingScreen = () => {
         setTime(getInitialTime());
         setRecordingState('InProgress');
 
-        const timerId: NodeJS.Timer = setInterval(() => {
+        const timerId = setInterval(() => {
             setTime(previousTime => addSeconds(previousTime, 1));
         }, 1000) ;
 
@@ -70,10 +69,11 @@ export const RecordingScreen = () => {
                     onPressIn={ handlePressStart }
                     onPressOut={ handlePressEnd }
                 >
-                    <FontAwesome
-                        name={'microphone'}
+                    <Icon
+                        name='microphone'
                         size={100}
                         color={'#3BB371'}
+                        type="font-awesome"
                     />
                 </TouchableOpacity>
             </View>

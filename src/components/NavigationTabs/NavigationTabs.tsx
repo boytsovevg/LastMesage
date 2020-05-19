@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { FontAwesome } from '@expo/vector-icons';
+import { Icon } from 'react-native-elements';
 
 import { RecordingScreen } from '../../screens/Recording/RecordingScreen';
 import { AllRecordingsScreen } from '../../screens/AllRecordings/AllRecordingsScreen';
@@ -18,8 +18,9 @@ export const NavigationTabs = () => (
             component={AllRecordingsScreen}
             options={{
                 tabBarIcon: ({color, size}) => (
-                    <FontAwesome
-                        name={'play'}
+                    <Icon
+                        name='play'
+                        type='font-awesome'
                         size={size}
                         color={color}
                     />
@@ -31,8 +32,9 @@ export const NavigationTabs = () => (
             component={RecordingScreen}
             options={{
                 tabBarIcon: ({color, size}) => (
-                    <FontAwesome
-                        name={'microphone'}
+                    <Icon
+                        name='microphone'
+                        type='font-awesome'
                         size={size}
                         color={color}
                     />
