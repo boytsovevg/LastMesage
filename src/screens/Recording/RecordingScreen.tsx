@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { addSeconds, format, getTime } from 'date-fns';
 
 import { FontAwesome } from '@expo/vector-icons';
 
-import { v4 as uuid } from 'uuid';
-
 import { useAppDispatch } from '../../store/store';
 import { RecordingDto } from '../../store/recordings/dto/recording';
 import { addRecordingAction } from '../../store/recordings/recordings.actions';
-import { selectRecordings } from '../../store/recordings/recordings.selectors';
 
 const getInitialTime = () => {
     const date = new Date();
@@ -26,7 +22,7 @@ export type RecordingState = 'None' | 'InProgress' | 'Complete';
 export const RecordingScreen = () => {
     const dispatch = useAppDispatch();
 
-    const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timer | undefined>(undefined);
     const [recordingState, setRecordingState] = useState<RecordingState>('None');
 
     const [time, setTime] = useState<Date>(getInitialTime());
@@ -35,11 +31,11 @@ export const RecordingScreen = () => {
         setTime(getInitialTime());
         setRecordingState('InProgress');
 
-        const intervalId = setInterval(() => {
+        const timerId: NodeJS.Timer = setInterval(() => {
             setTime(previousTime => addSeconds(previousTime, 1));
-        }, 1000);
+        }, 1000) ;
 
-        setIntervalId(intervalId);
+        setIntervalId(timerId);
     };
     const handlePressEnd = () => {
         setRecordingState('Complete');
@@ -50,7 +46,7 @@ export const RecordingScreen = () => {
         }
 
         const recordingDto: RecordingDto = {
-            id: uuid(),
+            id: new Date().getTime(),
             title: 'New recording',
             duration: getTime(time)
         };
@@ -63,22 +59,23 @@ export const RecordingScreen = () => {
         <View style={ styles.container }>
             {
                 recordingState !== 'None' && (
-                    <Text>
+                    <Text style={styles.recordingTime}>
                         { format(time, 'mm:ss') }
                     </Text>
                 )
             }
 
             <View style={ styles.element }>
-                <TouchableWithoutFeedback
+                <TouchableOpacity
                     onPressIn={ handlePressStart }
                     onPressOut={ handlePressEnd }
                 >
                     <FontAwesome
                         name={'microphone'}
                         size={100}
+                        color={'#3BB371'}
                     />
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -88,9 +85,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
     element: {
         marginTop: 30,
     },
+    recordingTime: {
+        fontSize: 20
+    }
 });

@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { recordingsReducer, recordingsReducerName } from './recordings/recordings.reducer';
+import { recordingsReducer } from './recordings/recordings.reducer';
 
 export const rootReducer = combineReducers({
-    [recordingsReducerName]: recordingsReducer
+    recordings: recordingsReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

@@ -1,5 +1,5 @@
 export interface RecordingDto {
-    id: string;
+    id: number;
     title: string;
     duration: number; // in milliseconds
 }

@@ -8,7 +8,11 @@ import { AllRecordingsScreen } from '../../screens/AllRecordings/AllRecordingsSc
 const Tab = createBottomTabNavigator()
 
 export const NavigationTabs = () => (
-    <Tab.Navigator>
+    <Tab.Navigator
+        tabBarOptions={{
+            showLabel: false,
+        }}
+    >
         <Tab.Screen
             name="AllRecordings"
             component={AllRecordingsScreen}

@@ -10,8 +10,6 @@ const initialState: RecordingsState = {
     recordings: []
 };
 
-export const recordingsReducerName = 'recordings';
-
 export const recordingsReducer = createReducer<RecordingsState>(
     initialState, builder =>
         builder
